@@ -6,25 +6,96 @@
     <title>Super Mario</title>
     <style>
         body {
-            margin: 0;
-            padding: 0;
+            background: black;
+        }
+        #wind {
+            width: 1000px;
+            height: 800px;
+            background: url("bg.png") no-repeat;
+            background-color: wheat;
+            margin: 0 auto;
+            position: relative;
+        }
+        #character {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            left: 450px;
+            top: 588px;
+            background: url("sp.png") -0px 0px;
+            transform: scale(1.8);
+
         }
     </style>
 </head>
 <body>
-    <canvas id="wind">
-        
-    </canvas>
+    <div id="wind">
+        <div id="character"></div>
+    </div>
     <script>
-        var canvas = document.getElementById("wind"),
-        ctx = canvas.getContext("2d");
-        canvas.width = 1150;
-        canvas.height = 800;
-        var background = new Image();
-        background.src = "bg2.png";
+        window.onload = function() {
+            var x = document.getElementById("character");
+            let posLeft = 0;
+            let posL = 0;
+            let intv;
+            let dir = 0; 
+            
 
-        background.onload = function(){
-            ctx.drawImage(background,0,0);   
+            document.onkeydown  = function(evt) {
+                evt = evt || window.event;
+                var charCode = evt.keyCode || evt.which;
+                console.log(charCode)
+    
+                if (charCode == '38') {
+                    console.log("up arrow");
+                }
+                else if (charCode == '40') {
+                    console.log("down arrow");
+                }
+                else if (charCode == '37') {
+                    if (dir != 2) {
+                        dir = 2;
+                        clearInterval(intv);
+                        intv = setInterval(() => {
+                        if (posLeft <= -400)
+                            posLeft = 0;
+                            x.style.backgroundPosition = (posLeft -= 80) + "px -100px";
+                            x.style.left = x.offsetLeft + 10 + "px";
+                        }, 150);
+                    }
+                }
+                else if (charCode == '39') {
+                    if (dir != 1) {
+                        dir = 1;
+                        clearInterval(intv);
+                        intv = setInterval(() => {
+                        if (posLeft <= -400)
+                            posLeft = 0;
+                            x.style.backgroundPosition = (posLeft -= 80) + "px -100px";
+                            x.style.left = x.offsetLeft + 10 + "px";
+                        }, 150);
+                    }
+                } else {
+                    dir = 0;
+                    clearInterval(intv);
+                    intv = setInterval(() => {
+                if (dir == 0) {
+                if (posLeft <= -400)
+                posLeft = 0;
+                    x.style.backgroundPosition = (posLeft -= 80) + "px 0";
+                }
+            }, 200);
+                }
+            };
+
+            clearInterval(intv);
+            intv = setInterval(() => {
+                if (dir == 0) {
+                if (posLeft <= -400)
+                posLeft = 0;
+                    x.style.backgroundPosition = (posLeft -= 80) + "px 0";
+                }
+            }, 200);
         }
     </script>
 </body>
